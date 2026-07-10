@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 // Connect axios instance directly to our backend server
-const API = axios.create({ baseURL: "http://localhost:5050/api" });
+const API = axios.create({
+  baseURL: "https://itjobxs-ecommerce-backend.onrender.com",
+});
 
 // Interceptor to automatically attach JWT tokens to secure requests
 API.interceptors.request.use((config) => {
