@@ -2,7 +2,7 @@
 
 A role-based e-commerce dashboard built with React, featuring JWT authentication, dynamic admin/user views, and real-time product catalog management.
 
-🔗 **Live Demo:** [your-vercel-url.vercel.app](https://your-vercel-url.vercel.app)
+🔗 **Live Demo:** [your-vercel-url.vercel.app](https://ecommerce-frontend-pb18.vercel.app)
 
 ## Features
 
