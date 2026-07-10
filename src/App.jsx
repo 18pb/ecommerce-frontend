@@ -3,7 +3,9 @@ import axios from "axios";
 
 // Connect axios instance directly to our backend server
 const API = axios.create({
-  baseURL: "https://itjobxs-ecommerce-backend.onrender.com",
+  baseURL:
+    import.meta.env.VITE_API_URL ||
+    "https://ecommerce-backend-itj1.onrender.com/api",
 });
 
 // Interceptor to automatically attach JWT tokens to secure requests
@@ -23,8 +25,6 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
-  // Toggle to select account type during signup
-  const [registerAsAdmin, setRegisterAsAdmin] = useState(false);
 
   // New Product Form State
   const [newProduct, setNewProduct] = useState({
@@ -55,18 +55,14 @@ export default function App() {
     e.preventDefault();
     try {
       if (isRegistering) {
-        // Dynamic Role Assignment: Admin or Standard User
-        const selectedRole = registerAsAdmin ? "admin" : "user";
-
+        // Public signup is always a standard User account.
+        // Admin accounts are provisioned manually and cannot be self-registered.
         await API.post("/auth/register", {
           name,
           email,
           password,
-          role: selectedRole,
         });
-        alert(
-          `Registration complete as ${selectedRole.toUpperCase()}! Please login.`,
-        );
+        alert("Registration complete! Please login.");
         setIsRegistering(false);
         // Clear name field after registration
         setName("");
@@ -136,9 +132,7 @@ export default function App() {
       <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
         <div className="bg-white p-8 rounded-xl shadow-md border border-gray-200 w-full max-w-md">
           <h2 className="text-2xl font-bold text-center text-blue-700 mb-6">
-            {isRegistering
-              ? "Create Dashboard Account"
-              : "ITJOBXS Gateway Login"}
+            {isRegistering ? "Create Dashboard Account" : "Welcome Back"}
           </h2>
 
           <form onSubmit={handleAuth} className="space-y-4">
@@ -186,24 +180,6 @@ export default function App() {
               />
             </div>
 
-            {isRegistering && (
-              <div className="flex items-center gap-2 py-1">
-                <input
-                  type="checkbox"
-                  id="adminCheck"
-                  checked={registerAsAdmin}
-                  onChange={(e) => setRegisterAsAdmin(e.target.checked)}
-                  className="w-4 height-4 text-blue-600 cursor-pointer"
-                />
-                <label
-                  htmlFor="adminCheck"
-                  className="text-sm text-gray-700 font-medium cursor-pointer selection:bg-transparent"
-                >
-                  Register as an <strong>Admin Account</strong>
-                </label>
-              </div>
-            )}
-
             <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow"
@@ -234,7 +210,7 @@ export default function App() {
       {/* Navbar Section */}
       <header className="flex flex-wrap justify-between items-center bg-blue-700 text-white p-4 rounded-xl shadow-md mb-8 gap-4">
         <h1 className="text-xl font-bold tracking-wide">
-          ITJOBXS Client E-Commerce Dashboard
+          E-Commerce Dashboard
         </h1>
         <div className="flex items-center gap-4">
           <span className="bg-blue-800 px-3 py-1 rounded text-sm font-semibold uppercase tracking-wider">
