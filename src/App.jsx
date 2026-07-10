@@ -357,6 +357,11 @@ export default function App() {
                     <p className="text-xs text-gray-600 line-clamp-2 mb-3">
                       {p.description}
                     </p>
+                    {p.stock === 0 && (
+                      <span className="inline-block text-xs font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded-full mb-2">
+                        ⚠️ Out of Stock
+                      </span>
+                    )}
                   </div>
 
                   {/* Footer Area with Price, Stock, and Smart Conditional View Actions */}
@@ -364,7 +369,13 @@ export default function App() {
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-xs text-gray-500">
                         In Stock:{" "}
-                        <strong className="text-gray-700">{p.stock}</strong>
+                        <strong
+                          className={
+                            p.stock === 0 ? "text-red-600" : "text-gray-700"
+                          }
+                        >
+                          {p.stock}
+                        </strong>
                       </span>
                       <span className="text-base font-mono font-bold text-emerald-600">
                         ${p.price}
@@ -385,9 +396,14 @@ export default function App() {
                     {role === "user" && (
                       <button
                         onClick={() => handleBuyProduct(p.name)}
-                        className="w-full mt-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-3 rounded text-xs transition shadow-sm"
+                        disabled={p.stock === 0}
+                        className={`w-full mt-1 font-bold py-1.5 px-3 rounded text-xs transition shadow-sm ${
+                          p.stock === 0
+                            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                        }`}
                       >
-                        ⚡ Order Item Now
+                        {p.stock === 0 ? "Out of Stock" : "⚡ Order Item Now"}
                       </button>
                     )}
                   </div>
